@@ -1,0 +1,145 @@
+.form{
+  width: min(400px, 100%);
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 40px 20px;
+  display: flex;
+  row-gap: 20px;
+  box-shadow: -2px 5px 10px var(--Border-color);
+  
+  flex-direction: column;
+  background-color: var(--Element-color);
+
+  &_header{
+    display: flex;
+    column-gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  &-text{
+    text-align: center;
+  }
+
+  &-link{
+    color: var(--Link-color);
+    font-weight: bold;
+
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+
+  &-name{
+    left: 4px;
+    padding: 0 6px;
+    position: absolute;
+    margin-left: 14px;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    transition: transform 0.3s ease;
+    pointer-events: none;
+    background-color: var(--Element-color);
+  }
+
+  &-element{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    
+    &-info{
+      color: var(--TextSecondari-color);
+      display: none;
+      padding: 4px 8px 0 8px;
+      font-size: 14px;
+    }
+  }
+
+  &-eye{
+    top: 11px;
+    right: 12px;
+    cursor: pointer;
+    position: absolute;
+    font-size: 22px;
+  }
+
+  &-input{
+    border: 2px solid var(--Border-color);
+    padding: 10px 14px;
+    outline: none;
+    font-size: 16px;
+    transition: border-color 0.4s ease-out;
+    border-radius: 22px;
+    background-color: transparent;
+
+    &:focus{
+      border-color: var(--Text-color);
+    }
+
+    &:valid{
+      border-color: var(--Principal-color);
+    }
+    
+    &:valid ~ .form-name,
+    &:focus ~ .form-name,
+    &:not(:placeholder-shown) ~ .form-name{
+      transform: translate(-10px, -24px) scale(0.90);
+    }
+
+    &:not(:placeholder-shown) ~ .form-element-info{
+      display: block;
+    }
+  }
+
+  &_error{
+    position: relative;
+    padding: 10px 40px 10px 10px;
+    border: 2px solid #eb4949;
+    border-radius: 10px;
+    background-color: #ee19195b;
+    
+    &-close{
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+      font-size: 24px;
+      position: absolute;
+    }
+
+    &-text{
+      white-space: pre-wrap;
+    }
+  }
+
+  &-button{
+    border: none;
+    cursor: pointer;
+    padding: 12px;
+    color: white;
+    font-size: 16px;
+    margin-top: 10px;
+    box-shadow: -1px 3px 8px #bdbdbd;
+    font-weight: bold;
+    border-radius: 22px;
+    background-color: var(--Principal-color);
+  }
+
+  @media (min-width: 400px) {
+    border-radius: 14px;
+  }
+
+  @media (min-width: 500px) {
+    min-height: auto;
+
+    &-button{
+      transition: box-shadow 0.3s, transform 0.3s;
+
+      &:hover{
+        transform: scale(0.99);
+        box-shadow: none;
+      }
+    }
+  }
+}

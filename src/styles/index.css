@@ -1,0 +1,67 @@
+:root {
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif
+  ; */
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  --Principal-color: #1BC1D9;  
+  --Background-color: #d6d6d6;
+  --Element-color: #F0F0F0;
+  --Border-color: #858585;
+  --Text-color: #111111;
+  --TextSecondari-color: #474747;
+  --Link-color: #0570eb;
+  --Option-color: #afafaf;
+  --Default-shadow: -2px 5px 10px var(--Border-color);
+  --Litle-shadow: -1px 3px 8px #bdbdbd;
+  --Error-color: #d14141; 
+  --Success-color: #1cc22a; 
+  --Tooltip-shadow: 0 4px 14px var(--Border-color);
+  --Backdrop-filter: blur(2px) brightness(50%);
+}
+
+body.dark{
+  --Principal-color: #02B0CA;  
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  color: var(--Text-color);
+  height: 100%;
+  /* max-width: 100vw; */
+  /* overflow-x: hidden; */
+}
+
+body {
+
+  background-color: var(--Background-color);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul{
+  list-style: none;
+}
+
+.notificationBadge{
+  left: calc(100% - 10px);
+  bottom: -4px;
+  padding: 4px;
+  position: absolute;
+  min-width: 25px;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: var(--Litle-shadow);
+  font-weight: bold;
+  border-radius: 12px;
+  background-color: var(--Principal-color);
+}

@@ -1,0 +1,49 @@
+.showDialog{
+  animation: Show 0.5s ease forwards;
+
+  & > *{
+    animation: Show_dialog 0.5s forwards;
+  }
+}
+
+.hidenDialog{
+  animation: Show 0.5s ease forwards, Hiden 0.4s ease forwards;
+
+  & > *{
+    animation: Show_dialog 0.5s forwards, Hiden_dialog 0.4s ease forwards;
+  }
+}
+
+
+@keyframes Show {
+  100%{
+    backdrop-filter: blur(2px) brightness(50%);
+  }
+}
+
+@keyframes Show_dialog {
+  80%{
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  100%{
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes Hiden {
+  100%{
+    backdrop-filter: blur(0) brightness(100%);
+  }
+}
+
+@keyframes Hiden_dialog {
+  50%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}

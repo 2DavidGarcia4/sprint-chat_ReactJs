@@ -1,0 +1,18 @@
+.button{
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  position: relative;
+  border-radius: 6px;
+
+  &-icon{
+    font-size: 24px;
+  }
+
+  @media (min-width: 500px) {
+    &:hover{
+      box-shadow: var(--Litle-shadow);
+      background-color: var(--Option-color);
+    }
+  }
+}

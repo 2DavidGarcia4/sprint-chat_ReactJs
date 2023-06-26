@@ -1,0 +1,147 @@
+.background{
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 500;
+  position: fixed;
+  animation: Show_Background 0.5s ease forwards, Hide_Background 0.5s ease forwards;
+  
+  &.show{
+    animation: Show_Background 0.5s ease forwards;
+  }
+}
+
+.tooltip{
+  z-index: 500;
+  padding: 4px 8px;
+  position: absolute;
+  box-shadow: var(--Tooltip-shadow);
+  border-radius: 6px;
+  pointer-events: none;
+  background-color: var(--Element-color);
+
+  &.options{
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    row-gap: 4px;
+    padding: 20px 20px 40px 20px;
+    position: fixed;
+    transform: translateY(110%);
+    animation: Show_Panel 0.6s ease forwards, Hide_Panel 0.6s ease forwards;
+    list-style: none;
+    border-radius: 0;
+    pointer-events: all;
+    flex-direction: column;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .show &{
+    animation: Show_Panel 0.6s ease forwards;
+  }
+
+  &-option{
+    cursor: pointer;
+    display: flex;
+    padding: 10px 20px;
+    align-items: center;
+    border-radius: 6px;
+    background-color: var(--Option-color);
+
+    & > *:first-child{
+      margin-right: 14px;
+    }
+
+    & > *:last-child{
+      font-weight: bold;
+    }
+
+    &-icon{
+      display: flex;
+      font-size: 20px;
+    }
+  }
+
+  &-arrow{
+    display: none;
+    position: absolute;
+    // border-color: var(--Element-color);
+    
+
+    .top &{
+      bottom: -13px;
+      border: 7px solid transparent;
+      border-top: 8px solid var(--Element-color);
+    }
+
+    
+    .bottom &{
+      top: -13px;
+      border: 7px solid transparent;
+      border-bottom: 8px solid var(--Element-color);
+    }
+  }
+
+  @media (min-width: 500px) {
+    &.options{
+      width: auto;
+      bottom: auto;
+      padding: 8px;
+      position: absolute;
+      animation: none;
+      transform: translateY(0);
+      border-radius: 6px;
+    }
+
+    &-option{
+      padding: 4px;
+      border-radius: 4px;
+      justify-content: space-between;
+      background-color: transparent;
+
+      &:hover{
+        background-color: var(--Option-color);
+      }
+    }
+
+    &-arrow{
+      display: block;
+      position: absolute;
+    }
+  }
+}
+
+@keyframes Show_Background {
+  100%{
+    backdrop-filter: var(--Backdrop-filter);
+  }
+}
+
+@keyframes Hide_Background {
+  100%{
+    backdrop-filter: initial;
+  }
+}
+
+@keyframes Show_Panel {
+  60%{
+    transform: translateY(0);
+    padding-bottom: 50px; 
+  }
+  80%{
+    transform: translateY(0);
+    padding-bottom: -32px; 
+  }
+  100%{
+    transform: translateY(0);
+    padding-bottom: 40px; 
+  }
+}
+
+@keyframes Hide_Panel {
+  100%{
+    bottom: -100%;
+  }
+}

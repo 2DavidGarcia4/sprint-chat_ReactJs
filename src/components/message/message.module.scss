@@ -1,0 +1,25 @@
+.custom{
+  padding: 20px;
+  box-shadow: -2px 5px 10px var(--Border-color);
+  border-radius: 14px;
+  background-color: var(--Element-color);
+  
+  &-content{
+    display: flex;
+    text-align: center;
+    font-weight: bold;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  &-icon{
+    color: green;
+    font-size: 28px;
+  }
+
+  &-info{
+    font-size: 14px;
+    text-align: center;
+    font-weight: 400;
+  }
+}
