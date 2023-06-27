@@ -6,15 +6,13 @@ import { RiContactsLine, RiContactsFill } from 'react-icons/ri'
 import { HiOutlineUser, HiUser } from 'react-icons/hi'
 import { BsGear, BsGearFill } from 'react-icons/bs'
 import { useUser, useRoute } from '@/hooks'
-import { useCtxUser } from '@/contexts'
 import { MouseEvent } from 'react'
 import CircleStatus from '../status/CircleStatus'
 import { useTooltip } from '@/hooks/useTooltip'
 
 export default function AppNavigator(){
-  const { protectedRoute } = useUser()
+  const { user, protectedRoute } = useUser()
   const { pathName } = useRoute()
-  const { user } = useCtxUser()
   const { events } = useTooltip()
 
   const isActiveRoute = (routName: string) => pathName.includes(routName)

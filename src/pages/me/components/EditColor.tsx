@@ -2,7 +2,7 @@ import styles from '../me.module.scss'
 
 import { useRef, useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { BsX } from 'react-icons/bs'
-import { useCtxUser } from '@/contexts'
+import { useUser } from '@/hooks'
 import { customFetch } from '@/utils/services'
 
 const defaultColor = '#858585'
@@ -15,7 +15,7 @@ export default function EditColor({color, updatedColor, setupdatedColor, setShow
 }){
   const [change, setChange] = useState(false)
   const editColorRef = useRef<HTMLDivElement>(null)
-  const { user, setUser } = useCtxUser()
+  const { user, setUser } = useUser()
 
   useEffect(()=> {
     if(editColorRef.current){

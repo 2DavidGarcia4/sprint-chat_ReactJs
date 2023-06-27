@@ -3,7 +3,8 @@ import styles from '../me.module.scss'
 import { useRef, useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react'
 import { FaEdit } from 'react-icons/fa'
 import { MdSave } from 'react-icons/md'
-import { useCtxUser, useMeCtx } from '@/contexts'
+import { useUser } from '@/hooks'
+import { useMeCtx } from '@/contexts'
 import { User } from '@/utils/types'
 import { customFetch } from '@/utils/services'
 
@@ -18,7 +19,7 @@ export default function EditName({type, name, active, setShow}: {
   const [edit, setEdit] = useState(active || false)
   const [message, setMessage] = useState('')
   const [updatedName, setUpdatedName] = useState(name)
-  const { user, setUser } = useCtxUser()
+  const { user, setUser } = useUser()
   const [usersNames, setUsersNames] = useState<Pick<User, 'id' | 'userName'>[]>([])
   const { valid, setValid, setShowValidator } = useMeCtx()
 

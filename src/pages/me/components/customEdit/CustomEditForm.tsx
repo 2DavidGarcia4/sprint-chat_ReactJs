@@ -2,7 +2,7 @@ import styles from './customEditForm.module.scss'
 
 import { HTMLInputTypeAttribute, FormEvent, ChangeEvent, useRef, useEffect, useState } from 'react'
 import { BsX } from 'react-icons/bs'
-import { useCtxUser } from '@/contexts'
+import { useUser } from '@/hooks'
 import { customFetch } from '@/utils/services'
 
 export default function CustomEditForm({title, message, inputs, type, onClose}: {
@@ -27,7 +27,7 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
   const inputsRef = useRef(inputs.map(({key, defaultValue})=> ({key, defaultValue: defaultValue || '', value: (defaultValue || '')})))
   const [errorMessage, setErrorMessage] = useState('')
   const [changes, setChanges] = useState(false)
-  const { user, setUser } = useCtxUser()
+  const { user, setUser } = useUser()
 
   useEffect(()=> {
     setTimeout(()=> {

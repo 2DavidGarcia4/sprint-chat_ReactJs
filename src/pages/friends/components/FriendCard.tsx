@@ -7,7 +7,7 @@ import { MdRemoveCircleOutline } from 'react-icons/md'
 import  { useTooltip } from '@/hooks/useTooltip'
 import CircleStatus from '@/components/status/CircleStatus'
 import { customFetch, navigate } from '@/utils/services'
-import { useCtxUser } from '@/contexts'
+import { useUser } from '@/hooks'
 import { socket } from '@/utils/socket'
 
 export default function FriendCard({friend, setFriends}: {
@@ -15,7 +15,7 @@ export default function FriendCard({friend, setFriends}: {
   setFriends: Dispatch<SetStateAction<User[]>>
 }){
   const { events, deleteTooltip } = useTooltip()
-  const {setUser} = useCtxUser()
+  const {setUser} = useUser()
 
   const openChatFriend = () => {
     customFetch(`chats/friend/${friend.id}`).then(res=> {

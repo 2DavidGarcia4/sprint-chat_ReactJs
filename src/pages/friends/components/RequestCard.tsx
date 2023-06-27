@@ -1,5 +1,3 @@
-'use client'
-
 import styles from '../friends.module.scss'
 
 import { useTooltip } from '@/hooks/useTooltip';
@@ -7,7 +5,8 @@ import { FriendRequest, User } from "@/utils/types";
 import { BsX, BsCheck } from 'react-icons/bs'
 import { HiOutlineUser } from 'react-icons/hi'
 import { customFetch, transformText } from '@/utils/services';
-import { useCtxUser, useFriendsCtx } from '@/contexts';
+import { useFriendsCtx } from '@/contexts';
+import { useUser } from '@/hooks';
 import { socket } from '@/utils/socket';
 
 export default function RequestCard({request, requestType, user}: {
@@ -16,7 +15,7 @@ export default function RequestCard({request, requestType, user}: {
   user: User,
 }){
   const { setRequests } = useFriendsCtx()
-  const { setUser } = useCtxUser()
+  const { setUser } = useUser()
   const { events, deleteTooltip } = useTooltip()
   
   const requestUser = request[requestType]

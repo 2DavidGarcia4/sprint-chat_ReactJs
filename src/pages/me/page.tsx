@@ -8,7 +8,8 @@ import { IoMdAdd } from 'react-icons/io'
 import { BsCircleFill } from 'react-icons/bs'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { MdEmojiEmotions } from 'react-icons/md'
-import { MeContext, useCtxUser } from '@/contexts'
+import { MeContext } from '@/contexts'
+import { useUser } from '@/hooks'
 import CircleStatus from '@/components/status/CircleStatus'
 import AboutMe from './components/AboutMe'
 import EditColor from './components/EditColor'
@@ -45,7 +46,7 @@ export default function Me(){
   const [valid, setValid] = useState<boolean | undefined>()
   const [showColorEdit, setShowColorEdit] = useState(false) 
   const [updatedColor, setUpdatedColor] = useState('')
-  const { user, setUser } = useCtxUser() 
+  const { user, setUser } = useUser() 
   const [showAddName, setShowAddName] = useState(false)
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')

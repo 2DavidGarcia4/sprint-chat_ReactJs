@@ -1,9 +1,9 @@
-import { useCtxUser } from '@/contexts'
+import { useContext } from 'react'
+import { UserContext, type UserContextTs } from '@/contexts'
 import { navigate } from '@/utils/services'
 
 export function useUser() {
-  const { user } = useCtxUser()
-
+  const { user, setUser } = useContext(UserContext) as UserContextTs
   const isLoged = Boolean(user)
 
   const protectedRoute = () => {
@@ -12,8 +12,11 @@ export function useUser() {
     }
   }
 
+
   return {
+    user, 
+    setUser,
     isLoged,
-    protectedRoute
+    protectedRoute,    
   }
 }

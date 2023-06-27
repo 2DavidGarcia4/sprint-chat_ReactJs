@@ -4,14 +4,14 @@ import { Link } from '../router'
 import { FormEvent, useState, MouseEvent } from 'react'
 import { BsX } from 'react-icons/bs'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
-import { useCtxUser } from '@/contexts'
+import { useUser } from '@/hooks'
 import { customFetch, navigate } from '@/utils/services'
 
 export default function CustomForm({type}: {type: 'login' | 'register'}){
   const [error, setError] = useState('')
   const [show, setShow] = useState(false)
   const [showConfir, setShowConfir] = useState(false)
-  const { setUser } = useCtxUser()
+  const { setUser } = useUser()
 
   const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()

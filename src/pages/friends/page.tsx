@@ -1,5 +1,3 @@
-'use client'
-
 import styles from './friends.module.scss'
 
 import { useState, useEffect } from 'react'
@@ -7,14 +5,15 @@ import HeaderFriends from "./components/HeaderFriends";
 import FriendsList from './components/FriendsList';
 import AddFriend from './components/AddFriend';
 import RequestsList from './components/RequestList';
-import { FriendsContext, useCtxUser } from '@/contexts';
+import { useUser } from '@/hooks';
+import { FriendsContext } from '@/contexts';
 import { FriendRequest } from '@/utils/types';
 import { customFetch } from '@/utils/services';
 import { socket } from '@/utils/socket';
 import HandleStatus from '@/components/autostatus/HandleStatus';
 
 export default function Friends(){
-  const { user } = useCtxUser()
+  const { user } = useUser()
   const [requests, setRequests] = useState<FriendRequest[]>([])
   const [activationIndex, setActivationIndex] = useState(0)
 

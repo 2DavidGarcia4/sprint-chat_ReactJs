@@ -4,7 +4,7 @@ import { useRef, useState, ChangeEvent } from 'react'
 import { transformText, customFetch } from '@/utils/services'
 import { FaEdit } from 'react-icons/fa'
 import { MdSave } from 'react-icons/md'
-import { useCtxUser } from '@/contexts'
+import { useUser } from '@/hooks'
 
 const charLimit = 200
 
@@ -14,7 +14,7 @@ export default function AboutMe({userId, about}: {userId?: string, about?: strin
   const [changes, setChanges] = useState(false)
   const [updatedAbout, setUpdatedAbout] = useState('')
   const [characters, setCharacters] = useState(about ? charLimit-about.length : charLimit-updatedAbout.length)
-  const { setUser } = useCtxUser()
+  const { setUser } = useUser()
 
   const activeTextArea = () => {
     setActiveEdit(true)

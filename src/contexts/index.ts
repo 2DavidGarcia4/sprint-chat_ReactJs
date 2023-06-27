@@ -1,7 +1,8 @@
 export { MeContext, useMeCtx } from './MeContext'
 export { FriendsContext, useFriendsCtx } from './FriendsContext'
 
-export { UserContext, useCtxUser } from './UserContext'
+export { UserContext } from './UserContext'
+export type { UserContextTs } from './UserContext'
 
 export { TooltipContext, useCtxTooltip } from './TooltipContext'
 export type { TooltipOption, Tooltip, TooltipContextTs } from './TooltipContext'
