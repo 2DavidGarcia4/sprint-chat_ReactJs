@@ -15,7 +15,7 @@
 .tooltip{
   z-index: 500;
   padding: 4px 8px;
-  position: absolute;
+  position: fixed;
   box-shadow: var(--Tooltip-shadow);
   border-radius: 6px;
   pointer-events: none;
