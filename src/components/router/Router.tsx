@@ -9,8 +9,6 @@ function defaultError() {
   )
 }
 
-// const defaultTitle = document.title
-
 interface Route {
   path: string
   title?: string
@@ -24,8 +22,6 @@ export function Router({children, routes, rootPath}: {
 }){
   const { pathName } = useRoute()
   const defaultTitle = useRef(document.title)
-  // console.log({children})
-  // console.log({defaultTitle: defaultTitle.current})
 
   let routeParams = {}
 
@@ -34,11 +30,9 @@ export function Router({children, routes, rootPath}: {
 
     return isRoute ? props : null
   }) || []
-  // console.log(routesFromChildren)
 
   const route = routesFromChildren.concat(routes || []).find(({path})=> {
     path = (rootPath || '')+path
-    // console.log({path, pathName})
     if(rootPath ? path == pathName : pathName.startsWith(path)) return true
 
     const matcherUrl = match(path, {
@@ -51,8 +45,10 @@ export function Router({children, routes, rootPath}: {
     return true
   })
 
-  if(route?.title) document.title = `${defaultTitle.current} | ${route.title}`
-  else if(document.title != defaultTitle.current) document.title = defaultTitle.current
+  if(!defaultTitle.current.includes('|')){
+    if(route?.title) document.title = `${defaultTitle.current} | ${route.title}`
+    else if(document.title != defaultTitle.current) document.title = defaultTitle.current
+  }
 
   const Page: React.FC<{routeParams: RouteParams}> = route?.component ||  defaultError
 
