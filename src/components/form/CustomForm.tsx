@@ -75,8 +75,10 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
 
       {type == 'register' && (
         <div className={styles['form-element']}>
-          <input className={styles['form-input']} onChange={handlerChange} type="text" name='userName' placeholder='&nbsp;' pattern="^[a-zA-Z0-9]+$" minLength={4} required />
-          <span className={styles['form-name']}>Nombre de usuario</span>
+          <div>
+            <input className={styles['form-input']} onChange={handlerChange} type="text" name='userName' placeholder='&nbsp;' pattern="^[a-zA-Z0-9]+$" minLength={4} required />
+            <span className={styles['form-name']}>Nombre de usuario</span>
+          </div>
           <p className={styles['form-element-info']}>Su nombre de usuario debe de ser unico y tener entre <strong>4</strong> y <strong>30</strong> caracteres, y no debe contener espacios, caracteres especiales ni emojis.</p>
         </div>
       )}
@@ -87,8 +89,10 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
       </div>
 
       <div className={styles['form-element']}>
-        <input className={styles['form-input']} onChange={handlerChange} type={show ? "text" : "password"} name='password' placeholder='&nbsp;' minLength={8} maxLength={20} required />
-        <span className={styles['form-name']}>Contraseña</span>
+        <div>
+          <input className={styles['form-input']} onChange={handlerChange} type={show ? "text" : "password"} name='password' placeholder='&nbsp;' minLength={8} maxLength={20} required />
+          <span className={styles['form-name']}>Contraseña</span>
+        </div>
         {show ? <AiOutlineEye className={styles['form-eye']} id='password' onClick={togglePassword} /> : <AiOutlineEyeInvisible className={styles['form-eye']} id='password' onClick={togglePassword} />}
         {type == 'register' && 
           <p className={styles['form-element-info']}>Su contraseña debe tener entre <strong>8</strong> y <strong>20</strong> caracteres, contener letras y números, y no debe contener espacios, caracteres especiales ni emojis.</p>
@@ -96,8 +100,10 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
       </div>
 
       {type == 'register' && <div className={styles['form-element']}>
-        <input className={styles['form-input']} onChange={handlerChange} type={showConfir ? "text" : "password"} name='confirmPassword' placeholder='&nbsp;' minLength={8} maxLength={20} required />
-        <span className={styles['form-name']}>Confirmar contraseña</span>
+        <div>
+          <input className={styles['form-input']} onChange={handlerChange} type={showConfir ? "text" : "password"} name='confirmPassword' placeholder='&nbsp;' minLength={8} maxLength={20} required />
+          <span className={styles['form-name']}>Confirmar contraseña</span>
+        </div>
         {showConfir ? <AiOutlineEye className={styles['form-eye']} id='confirmPassword' onClick={togglePassword} /> : <AiOutlineEyeInvisible className={styles['form-eye']} id='confirmPassword' onClick={togglePassword} />}
       </div>}
 

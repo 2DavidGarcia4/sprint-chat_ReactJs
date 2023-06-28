@@ -48,6 +48,12 @@
     position: relative;
     flex-direction: column;
     justify-content: center;
+
+    & > div{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
     
     &-info{
       color: var(--TextSecondari-color);
