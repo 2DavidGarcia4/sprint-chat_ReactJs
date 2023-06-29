@@ -1,8 +1,8 @@
-import { Tooltip, TooltipOption, useCtxTooltip } from "@/contexts"
-import { MouseEvent } from 'react'
+import { useContext, type MouseEvent } from 'react'
+import { TooltipContext, type Tooltip, type TooltipContextTs, type TooltipOption } from "@/contexts"
 
 export function useTooltip() {
-  const { setTooltip, tooltip } = useCtxTooltip()
+  const { setTooltip, tooltip } = useContext(TooltipContext) as TooltipContextTs
 
   const createTooltip = ({currentTarget}: MouseEvent<HTMLElement>) => {
     if(tooltip?.options) return
@@ -18,7 +18,6 @@ export function useTooltip() {
   }
 
   const deleteTooltip = () => {
-    if(tooltip?.options) return
     setTooltip(undefined)
   }
 
@@ -43,12 +42,16 @@ export function useTooltip() {
   } 
 
   return {
+    tooltip,
     createTooltip,
     deleteTooltip,
     createTooltipOptions,
     events: {
       onMouseEnter: createTooltip,
-      onMouseLeave: deleteTooltip
+      onMouseLeave() {
+        if(tooltip?.options) return
+        deleteTooltip()
+      }
     }
   }
 }

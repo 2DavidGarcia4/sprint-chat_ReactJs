@@ -1,14 +1,17 @@
 import { useContext } from 'react'
-import { UserContext, type UserContextTs } from '@/contexts'
+import { useTooltip } from '.'
 import { navigate } from '@/utils/services'
+import { UserContext, type UserContextTs } from '@/contexts'
 
 export function useUser() {
   const { user, setUser } = useContext(UserContext) as UserContextTs
+  const { deleteTooltip } = useTooltip()
   const isLoged = Boolean(user)
 
   const protectedRoute = () => {
-    if(!user) {
+    if(!isLoged) {
       navigate('/login')
+      deleteTooltip()
     }
   }
 
