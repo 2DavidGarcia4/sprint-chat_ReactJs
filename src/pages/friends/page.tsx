@@ -1,21 +1,21 @@
 import styles from './friends.module.scss'
 
 import { useState, useEffect } from 'react'
-import HeaderFriends from "./components/HeaderFriends";
-import FriendsList from './components/FriendsList';
-import AddFriend from './components/AddFriend';
-import RequestsList from './components/RequestList';
-import { useUser } from '@/hooks';
-import { FriendsContext } from '@/contexts';
-import { FriendRequest } from '@/utils/types';
-import { customFetch } from '@/utils/services';
 import { socket } from '@/utils/socket';
-import HandleStatus from '@/components/autostatus/HandleStatus';
+import { FriendsContext } from '@/contexts';
+import { customFetch } from '@/utils/services';
+import type { FriendRequest } from '@/utils/types';
+import { useNotifications, useUser } from '@/hooks';
+import AddFriend from './components/AddFriend';
+import FriendsList from './components/FriendsList';
+import RequestsList from './components/RequestList';
+import HeaderFriends from "./components/HeaderFriends";
 
 export default function Friends(){
   const { user } = useUser()
   const [requests, setRequests] = useState<FriendRequest[]>([])
   const [activationIndex, setActivationIndex] = useState(0)
+  const { createNotification } = useNotifications()
 
   useEffect(()=> {
     customFetch('friends/requests').then((res: FriendRequest[])=> {
@@ -27,12 +27,36 @@ export default function Friends(){
     const handleFriendRequestCreate = (newRequest: FriendRequest) => {
       if(newRequest.receiver.id == user?.id) {
         setRequests(r=> [...r, newRequest])
+        createNotification({
+          type: 'info',
+          content: `Solicitud de amistad entrante de ${newRequest.sender.userName}`
+        })
       }
     }
     
     const handleFriendRequestDelete = (oldRequest: FriendRequest) => {
+      
       if(oldRequest.sender.id == user?.id || oldRequest.receiver.id == user?.id) {
         setRequests(r=> r.filter(f=> f.id != oldRequest.id))
+        console.log(user.friends, user.friends.some(s=> s == oldRequest.sender.id))
+
+        if(oldRequest.sender.id != user?.id){
+          createNotification({
+            type: 'info',
+            mute: true,
+            time: 10,
+            content: `Solicitud de amistad de ${oldRequest.sender.userName} eliminada`
+          })
+        }
+
+        if(oldRequest.receiver.id != user?.id){
+          createNotification({
+            type: 'info',
+            mute: true,
+            time: 10,
+            content: `${oldRequest.receiver.userName} ha rechazado tu solicitud de amistad`
+          })
+        }
       }
     }
 
@@ -56,7 +80,6 @@ export default function Friends(){
           {(activationIndex == 2 && user) && <RequestsList {...{user}} />}
         </FriendsContext.Provider>
       </div>
-      <HandleStatus />
     </section>
   )
 }

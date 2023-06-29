@@ -2,11 +2,12 @@ import styles from '../friends.module.scss'
 
 import { useEffect, useState, useRef, useCallback, ChangeEvent, KeyboardEvent, MouseEvent } from 'react'
 import { customFetch, emitFriendRequestCreate } from '@/utils/services'
-import { BsX } from 'react-icons/bs'
 import { FriendRequest, User } from '@/utils/types'
+import { useNotifications } from '@/hooks'
+import { useFriendsCtx } from '@/contexts'
 import { HiOutlineUser } from 'react-icons/hi'
 import { FaCheck } from 'react-icons/fa'
-import { useFriendsCtx } from '@/contexts'
+import { BsX } from 'react-icons/bs'
 
 type UserPreview = Pick<User, 'id' | 'name' | 'userName' | 'email' | 'avatarUrl'>
 
@@ -22,6 +23,7 @@ export default function AddFriend({user}: {
   const [openList, setOpenList] = useState(false)
   const [message, setMessage] = useState('')
   const { setRequests } = useFriendsCtx()
+  const { createNotification } = useNotifications()
 
   useEffect(()=> {
     if(!users.length){
@@ -76,9 +78,9 @@ export default function AddFriend({user}: {
     
   }, [users])
 
-  const handleFocus = useCallback(() => {
+  const handleFocus = () => {
     setOpenList(true)
-  }, [])
+  }
 
   const handleKeyUp = useCallback((event: KeyboardEvent<HTMLTextAreaElement>) => {
     if(textAreaRef.current) {
@@ -108,8 +110,15 @@ export default function AddFriend({user}: {
       })
 
       if(newRequest.id) newRequestsIds.push(newRequest.id)
-
     }
+
+    const s = newRequestsIds.length != 1 ? 's' : ''
+
+    createNotification({
+      type: 'success',
+      mute: true,
+      content: `${newRequestsIds.length} solicitude${s} de amistad enviada${s}`
+    })
     
     customFetch('friends/requests').then(res=> {
       if(res.length) {

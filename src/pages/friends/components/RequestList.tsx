@@ -1,10 +1,10 @@
 import styles from '../friends.module.scss'
 
-import { useEffect, useState, Dispatch, SetStateAction } from 'react'
-import { FriendRequest, User } from '@/utils/types'
-import RequestCard from './RequestCard'
+import { useEffect, useState } from 'react'
 import { useFriendsCtx } from '@/contexts'
+import type { FriendRequest, User } from '@/utils/types'
 import ItemsList from './ItemsList'
+import RequestCard from './RequestCard'
 
 export default function RequestsList({user}: {
   user: User

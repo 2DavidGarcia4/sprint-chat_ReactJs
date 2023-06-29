@@ -1,9 +1,9 @@
 import styles from './customEditForm.module.scss'
 
-import { HTMLInputTypeAttribute, FormEvent, ChangeEvent, useRef, useEffect, useState } from 'react'
+import { HTMLInputTypeAttribute, FormEvent, ChangeEvent, useRef, useMemo, useEffect, useState } from 'react'
+import { useNotifications, useUser } from '@/hooks'
+import { customFetch, handleHeight } from '@/utils/services'
 import { BsX } from 'react-icons/bs'
-import { useUser } from '@/hooks'
-import { customFetch } from '@/utils/services'
 
 export default function CustomEditForm({title, message, inputs, type, onClose}: {
   title: string
@@ -21,30 +21,33 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
   type?: 'status'
   onClose?: ()=> any
 }){
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
   const firstInputRef = useRef<HTMLInputElement>(null)
   const inputsRef = useRef(inputs.map(({key, defaultValue})=> ({key, defaultValue: defaultValue || '', value: (defaultValue || '')})))
   const [errorMessage, setErrorMessage] = useState('')
   const [changes, setChanges] = useState(false)
   const { user, setUser } = useUser()
+  const { createNotification } = useNotifications()
+
+  const padding = useMemo(()=> {
+    return window.innerWidth <= 500 ? 40 : 0
+  }, [containerRef])
 
   useEffect(()=> {
-    setTimeout(()=> {
-      containerRef.current?.classList.add(styles.show)
-      if(typeof window != 'undefined' && window.innerWidth <= 500){
-        if(containerRef.current) containerRef.current.style.height = ((formRef.current?.clientHeight || 0) + 40) + 'px'
-      }
+    if(containerRef) {
+      containerRef.classList.add(styles.show)
+      handleHeight(containerRef, formRef.current, padding)
 
       firstInputRef.current?.focus()
-    }, 100)
-  }, [])
+    }
+  }, [containerRef])
 
   const close = () => {
-    containerRef.current?.classList.remove(styles.show)
-    if(typeof window != 'undefined' && window.innerWidth <= 500){
+    containerRef?.classList.remove(styles.show)
+    if(window.innerWidth <= 500){
       if(formRef.current) formRef.current.style.padding = ''
-      if(containerRef.current) containerRef.current.style.height = ''
+      if(containerRef) containerRef.style.height = ''
     }
 
     if(onClose) setTimeout(()=> {
@@ -70,8 +73,18 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
       if(res.id) {
         setUser(res)
         close()
+        createNotification({
+          type: 'success',
+          content: type == 'status' ? 'Estado personalizado actualizado' : 'Avatar actualizado'
+        })
       }
-    }).catch(()=> console.error('Error in custom update user'))
+    }).catch(()=> {
+      console.error('Error in custom update user')
+      createNotification({
+        type: 'error',
+        content: type == 'status' ? 'Error al actualizar el estado' : 'Error al actualizar el avatar'
+      })
+    })
   }
 
   const handlerChange = ({target: {id, value}}: ChangeEvent<HTMLInputElement>) => {
@@ -89,14 +102,13 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
     if(errorMessage) setErrorMessage('')
     
     setTimeout(()=> {
-      if(typeof window != 'undefined'){
-        if(containerRef.current) containerRef.current.style.height = formRef.current?.clientHeight + 'px'
-      }
+      handleHeight(containerRef, formRef.current, padding)
+      // if(containerRef) containerRef.style.height = formRef.current?.clientHeight + 'px'
     }, 100)
   }
 
   return (
-    <div ref={containerRef} className={styles.container}>
+    <div ref={setContainerRef} className={styles.container}>
       <form ref={formRef} onSubmit={handlerSubmit} className={styles.customEdit}>
         <div className={styles['customEdit_close']} onClick={close}>
           <BsX className={styles['customEdit_close-icon']}/>

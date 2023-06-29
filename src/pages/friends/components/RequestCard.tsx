@@ -1,13 +1,13 @@
 import styles from '../friends.module.scss'
 
 import { useTooltip } from '@/hooks/useTooltip';
-import { FriendRequest, User } from "@/utils/types";
+import { socket } from '@/utils/socket';
+import { useFriendsCtx } from '@/contexts';
+import { useNotifications, useUser } from '@/hooks';
+import type { FriendRequest, User } from "@/utils/types";
+import { customFetch, transformText } from '@/utils/services';
 import { BsX, BsCheck } from 'react-icons/bs'
 import { HiOutlineUser } from 'react-icons/hi'
-import { customFetch, transformText } from '@/utils/services';
-import { useFriendsCtx } from '@/contexts';
-import { useUser } from '@/hooks';
-import { socket } from '@/utils/socket';
 
 export default function RequestCard({request, requestType, user}: {
   request: FriendRequest
@@ -17,6 +17,7 @@ export default function RequestCard({request, requestType, user}: {
   const { setRequests } = useFriendsCtx()
   const { setUser } = useUser()
   const { events, deleteTooltip } = useTooltip()
+  const { createNotification } = useNotifications()
   
   const requestUser = request[requestType]
 
@@ -34,9 +35,13 @@ export default function RequestCard({request, requestType, user}: {
       if(res.id) {
         setUser(res)
         socket.emit('friendAdd', res)
+        createNotification({
+          type: 'info',
+          mute: true,
+          content: `Solicitud de amistad de ${requestUser.userName} aceptada`
+        })
 
-        customFetch(`friends/requests/${request.id}`, 'DELETE').then((res)=> {
-          console.log(res)
+        customFetch(`friends/requests/${request.id}`, 'DELETE').then(()=> {
         }).catch((e)=> console.error('Error in delete request', e))
       }
     }).catch(()=> console.error('Error in add friend'))
@@ -44,8 +49,12 @@ export default function RequestCard({request, requestType, user}: {
 
   const cancelRequest = () => {
     removeRequest()
-    customFetch(`friends/requests/${request.id}`, 'DELETE').then((res)=> {
-      console.log(res)
+    customFetch(`friends/requests/${request.id}`, 'DELETE').then(()=> {
+      createNotification({
+        type: 'info',
+        mute: true,
+        content: `Solicitud de amistad de ${requestUser.userName} rechazada`
+      })
     }).catch((e)=> console.error('Error in delete request', e))
   }
 

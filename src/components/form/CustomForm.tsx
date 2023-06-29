@@ -1,17 +1,19 @@
 import styles from './customForm.module.scss'
 
-import { Link } from '../router'
 import { FormEvent, useState, MouseEvent } from 'react'
+import { STORAGE_KEYS } from '@/utils/data'
+import { useNotifications, useUser } from '@/hooks'
+import { customFetch, navigate } from '@/utils/services'
+import { Link } from '../router'
 import { BsX } from 'react-icons/bs'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
-import { useUser } from '@/hooks'
-import { customFetch, navigate } from '@/utils/services'
 
 export default function CustomForm({type}: {type: 'login' | 'register'}){
   const [error, setError] = useState('')
   const [show, setShow] = useState(false)
   const [showConfir, setShowConfir] = useState(false)
   const { setUser } = useUser()
+  const { createNotification } = useNotifications()
 
   const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -24,14 +26,24 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
         if(res.status == 401) return setError('Campos inválidos\nEl coreo o la contraseña es invalida.')
 
         if(res.token){
-          localStorage.setItem('secret', res.token)
+          localStorage.setItem(STORAGE_KEYS.token, res.token)
+          createNotification({
+            type: 'success',
+            content: 'Sesión iniciada'
+          })
           customFetch(`users/@me`).then(res=> {
             if(res.id) setUser(res)
           })
           navigate('/')
         }
       })
-      .catch(()=> console.error('Error in login'))
+      .catch(()=> {
+        console.error('Error in login')
+        createNotification({
+          type: 'error',
+          content: 'Ha ocurrido un error al iniciar la sesión'
+        })
+      })
 
     }else{
       if(fields.password != fields.confirmPassword) return setError('Las contraseñas son diferentes')
@@ -43,13 +55,25 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
         }
 
         if(res.token){
-          localStorage.setItem('secret', res.token)
+          localStorage.setItem(STORAGE_KEYS.token, res.token)
           navigate('/')
         }
 
-        if(res.user) setUser(res.user)
+        if(res.user) {
+          setUser(res.user)
+          createNotification({
+            type: 'success',
+            content: 'Te has registrado'
+          })
+        }
       })
-      .catch(()=> console.error('Error in register'))
+      .catch(()=> {
+        console.error('Error in register')
+        createNotification({
+          type: 'error',
+          content: 'Ha ocurrido un error al registrarse'
+        })
+      })
     }
   }
 

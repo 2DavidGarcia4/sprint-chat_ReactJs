@@ -2,10 +2,10 @@ import styles from '../friends.module.scss'
 
 import { useEffect, useState } from 'react'
 import { User } from '@/utils/types'
-import { customFetch } from '@/utils/services'
-import FriendCard from './FriendCard'
 import { socket } from '@/utils/socket'
+import { customFetch } from '@/utils/services'
 import ItemsList from './ItemsList'
+import FriendCard from './FriendCard'
 
 export default function FriendsList({user}: {user: User}){
   const [friends, setFriends] = useState<User[]>([])
@@ -32,16 +32,10 @@ export default function FriendsList({user}: {user: User}){
         }
       }).catch(()=> console.error('Error in get friends'))
     }
-  }, [friends])
 
-  useEffect(()=> {
     const handleUserUpdate = (updatedUser: User) => {
-      if(user.id != updatedUser.id){
-
-        if(friends.some(s=> s.id == updatedUser.id)){
-          setFriends(friends.map(f=> f.id == updatedUser.id ? updatedUser : f))
-          
-        }
+      if(friends.some(s=> s.id == updatedUser.id)){
+        setFriends(fs=> fs.map(f=> f.id == updatedUser.id ? updatedUser : f))
       }
     }
 
@@ -50,7 +44,7 @@ export default function FriendsList({user}: {user: User}){
     return ()=> {
       socket.off('userUpdate', handleUserUpdate)
     }
-  }, [])
+  }, [friends])
   
   return (
     <div className={styles.section}>

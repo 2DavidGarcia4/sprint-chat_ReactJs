@@ -1,10 +1,10 @@
 import styles from '../me.module.scss'
 
 import { useRef, useState, ChangeEvent } from 'react'
+import { useNotifications, useUser } from '@/hooks'
 import { transformText, customFetch } from '@/utils/services'
 import { FaEdit } from 'react-icons/fa'
 import { MdSave } from 'react-icons/md'
-import { useUser } from '@/hooks'
 
 const charLimit = 200
 
@@ -15,6 +15,7 @@ export default function AboutMe({userId, about}: {userId?: string, about?: strin
   const [updatedAbout, setUpdatedAbout] = useState('')
   const [characters, setCharacters] = useState(about ? charLimit-about.length : charLimit-updatedAbout.length)
   const { setUser } = useUser()
+  const { createNotification } = useNotifications()
 
   const activeTextArea = () => {
     setActiveEdit(true)
@@ -22,7 +23,7 @@ export default function AboutMe({userId, about}: {userId?: string, about?: strin
     if(textAreaRef.current){
       setTimeout(()=> {
         textAreaRef.current?.focus()
-      }, 200)
+      }, 100)
     }
   }
 
@@ -39,17 +40,17 @@ export default function AboutMe({userId, about}: {userId?: string, about?: strin
     if(userId) customFetch(`users/${userId}`, 'PATCH', {about: updatedAbout}).then(res=> {
       if(res.id){
         setUser(res)
-        // createNotification({
-        //   type: 'success',
-        //   content: 'Updated name'
-        // })
+        createNotification({
+          type: 'success',
+          content: 'Cambios guardados'
+        })
       }
     }).catch(()=> {
       console.error('Error in update user about')
-      // createNotification({
-      //   type: 'error',
-      //   content: 'Error updating name'
-      // })
+      createNotification({
+        type: 'error',
+        content: 'Error al guardar los cambios'
+      })
     })
   }
 

@@ -1,12 +1,12 @@
 import styles from '../me.module.scss'
 
 import { useRef, useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react'
+import { User } from '@/utils/types'
+import { useMeCtx } from '@/contexts'
+import { customFetch } from '@/utils/services'
+import { useNotifications, useUser } from '@/hooks'
 import { FaEdit } from 'react-icons/fa'
 import { MdSave } from 'react-icons/md'
-import { useUser } from '@/hooks'
-import { useMeCtx } from '@/contexts'
-import { User } from '@/utils/types'
-import { customFetch } from '@/utils/services'
 
 export default function EditName({type, name, active, setShow}: {
   type: 'normal' | 'user'
@@ -22,12 +22,13 @@ export default function EditName({type, name, active, setShow}: {
   const { user, setUser } = useUser()
   const [usersNames, setUsersNames] = useState<Pick<User, 'id' | 'userName'>[]>([])
   const { valid, setValid, setShowValidator } = useMeCtx()
+  const { createNotification } = useNotifications()
 
   useEffect(()=> {
     if(inputRef.current){
       setTimeout(()=> {
         inputRef.current?.focus()
-      }, 200)
+      }, 100)
     }
 
     if(valid){
@@ -42,7 +43,13 @@ export default function EditName({type, name, active, setShow}: {
       customFetch(`users?names=true`).then(res=> {
         if(res.length) setUsersNames(res)
         
-      }).catch(()=> console.error('Error in get users'))
+      }).catch(()=> {
+        console.error('Error in get users')
+        createNotification({
+          type: 'error',
+          content: 'Ha ocurrido un error, buelve a intentarlo'
+        })
+      })
       
     }
   }
@@ -87,17 +94,17 @@ export default function EditName({type, name, active, setShow}: {
         setUser(res)
         setChange(false)
         if(setShow && (!updatedName)) setShow(false)
-        // createNotification({
-        //   type: 'success',
-        //   content: 'Updated name'
-        // })
+        createNotification({
+          type: 'success',
+          content: type == 'normal' ? 'Nombre actualizado' : 'Nombre de usuario actualizado'
+        })
       }
     }).catch(()=> {
       console.error('Error in update user about')
-      // createNotification({
-      //   type: 'error',
-      //   content: 'Error updating name'
-      // })
+      createNotification({
+        type: 'error',
+        content: type == 'normal' ? 'Error al actualizar el nombre' : 'Error al actualizar el nombre de usuario'
+      })
     })
   }
 

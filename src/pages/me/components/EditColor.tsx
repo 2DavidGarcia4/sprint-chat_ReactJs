@@ -1,9 +1,9 @@
 import styles from '../me.module.scss'
 
 import { useRef, useState, useEffect, ChangeEvent, Dispatch, SetStateAction } from 'react'
-import { BsX } from 'react-icons/bs'
-import { useUser } from '@/hooks'
 import { customFetch } from '@/utils/services'
+import { useNotifications, useUser } from '@/hooks'
+import { BsX } from 'react-icons/bs'
 
 const defaultColor = '#858585'
 
@@ -16,6 +16,7 @@ export default function EditColor({color, updatedColor, setupdatedColor, setShow
   const [change, setChange] = useState(false)
   const editColorRef = useRef<HTMLDivElement>(null)
   const { user, setUser } = useUser()
+  const { createNotification } = useNotifications()
 
   useEffect(()=> {
     if(editColorRef.current){
@@ -41,17 +42,17 @@ export default function EditColor({color, updatedColor, setupdatedColor, setShow
       if(res.id){
         setUser(res)
         closeEditColor()
-        // createNotification({
-        //   type: 'success',
-        //   content: 'Updated name'
-        // })
+        createNotification({
+          type: 'success',
+          content: 'Cambios guardados'
+        })
       }
     }).catch(()=> {
       console.error('Error in update user color')
-      // createNotification({
-      //   type: 'error',
-      //   content: 'Error updating name'
-      // })
+      createNotification({
+        type: 'error',
+        content: 'Error al guardar los cambios'
+      })
     })
       
   }

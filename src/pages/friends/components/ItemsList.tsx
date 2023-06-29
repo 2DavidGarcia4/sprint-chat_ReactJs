@@ -1,6 +1,10 @@
 import styles from '../friends.module.scss'
 
-export default function ItemsList({ children, title, items }: { children: React.ReactNode, title: string, items: number }){
+export default function ItemsList({ children, title, items }: { 
+  children: React.ReactNode
+  title: string
+  items: number 
+}){
   return (
     <div className={styles.section_items}>
       <div className={styles['section_items-title']}>

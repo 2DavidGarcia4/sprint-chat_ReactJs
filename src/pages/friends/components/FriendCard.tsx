@@ -1,21 +1,22 @@
 import styles from '../friends.module.scss'
 
-import { MouseEvent, Dispatch, SetStateAction } from 'react'
+import { type MouseEvent, type Dispatch, type SetStateAction } from 'react'
 import { User } from "@/utils/types"
+import { socket } from '@/utils/socket'
+import { useTooltip } from '@/hooks/useTooltip'
+import { customFetch, navigate } from '@/utils/services'
+import { useNotifications, useUser } from '@/hooks'
+import CircleStatus from '@/components/shared/status/CircleStatus'
 import { HiOutlineUser } from 'react-icons/hi'
 import { MdRemoveCircleOutline } from 'react-icons/md'
-import  { useTooltip } from '@/hooks/useTooltip'
-import CircleStatus from '@/components/status/CircleStatus'
-import { customFetch, navigate } from '@/utils/services'
-import { useUser } from '@/hooks'
-import { socket } from '@/utils/socket'
 
 export default function FriendCard({friend, setFriends}: {
   friend: User,
   setFriends: Dispatch<SetStateAction<User[]>>
 }){
   const { events, deleteTooltip } = useTooltip()
-  const {setUser} = useUser()
+  const { setUser } = useUser()
+  const { createNotification } = useNotifications()
 
   const openChatFriend = () => {
     customFetch(`chats/friend/${friend.id}`).then(res=> {
@@ -45,8 +46,20 @@ export default function FriendCard({friend, setFriends}: {
         setUser(res)
         socket.emit('friendRemove', res)
         setFriends(f=> f.filter(f=> f.id != friend.id))
+        createNotification({
+          type: 'info',
+          mute: true,
+          content: `Has eliminado a ${friend.userName} de tus amigos`
+        })
       }
-    }).catch(()=> console.error('Error in remove friend'))
+    }).catch(()=> {
+      console.error('Error in remove friend')
+      createNotification({
+        type: 'error',
+        mute: true,
+        content: `No se ha podido eliminar a ${friend.userName} de tus amigos`
+      })
+    })
   }
 
   return (

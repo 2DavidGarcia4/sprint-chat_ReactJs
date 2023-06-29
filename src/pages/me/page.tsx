@@ -1,24 +1,24 @@
-'use client'
-
 import styles from './me.module.scss'
 
-import { useRef, useState, useEffect, useCallback, FormEvent, ChangeEvent, HTMLInputTypeAttribute } from 'react'
-import { HiUser, HiPencil } from 'react-icons/hi'
+import { useState, useCallback, type HTMLInputTypeAttribute } from 'react'
+import { MeContext } from '@/contexts'
+import { STORAGE_KEYS } from '@/utils/data'
+import { useNotifications, useUser } from '@/hooks'
+import { customFetch, navigate } from '@/utils/services'
+import Option from './components/Option'
+import AboutMe from './components/AboutMe'
+import EditName from './components/EditName'
+import EditColor from './components/EditColor'
+import ChangePassword from './components/ChangePassword'
+import PasswordValidator from './components/PasswordValidator'
+import CircleStatus from '@/components/shared/status/CircleStatus'
+import CustomEditForm from './components/customEdit/CustomEditForm'
+import ConfirmationDialog from '@/components/custom/ConfirmationDialog'
 import { IoMdAdd } from 'react-icons/io'
 import { BsCircleFill } from 'react-icons/bs'
-import { RiLockPasswordFill } from 'react-icons/ri'
 import { MdEmojiEmotions } from 'react-icons/md'
-import { MeContext } from '@/contexts'
-import { useUser } from '@/hooks'
-import CircleStatus from '@/components/status/CircleStatus'
-import AboutMe from './components/AboutMe'
-import EditColor from './components/EditColor'
-import EditName from './components/EditName'
-import PasswordValidator from './components/PasswordValidator'
-import Option from './components/Option'
-import { customFetch, navigate } from '@/utils/services'
-import ConfirmationDialog from '@/components/custom/ConfirmationDialog'
-import CustomEditForm from './components/customEdit/CustomEditForm'
+import { HiUser, HiPencil } from 'react-icons/hi'
+import { RiLockPasswordFill } from 'react-icons/ri'
 
 const status = [
   {
@@ -40,18 +40,14 @@ const status = [
 ]
 
 export default function Me(){
-  const newPasswordRef = useRef<HTMLInputElement>(null)
-  const confirmPasswordRef = useRef<HTMLInputElement>(null)
   const [showValidator, setShowValidator] = useState<boolean>(false)
   const [valid, setValid] = useState<boolean | undefined>()
   const [showColorEdit, setShowColorEdit] = useState(false) 
   const [updatedColor, setUpdatedColor] = useState('')
   const { user, setUser } = useUser() 
   const [showAddName, setShowAddName] = useState(false)
-  const [newPassword, setNewPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [newPasswordMessage, setNewPasswordMessage] = useState('')
   const [showConfirmation, setShowConfirmation] = useState(false)
+  const { createNotification } = useNotifications()
   const [customEditData, setCustomEditData] = useState<{
     title: string
     message?: string
@@ -68,44 +64,17 @@ export default function Me(){
     type?: 'status'
   } | undefined>(undefined)
 
-  useEffect(()=> {
-    if(newPassword && confirmPassword && valid){
-      console.log('jaja')
-      customFetch(`users/${user?.id}`, 'PATCH', {password: newPassword}).then(res=> {
-        console.log(res)
-        if(res.id) {
-          setUser(res)
-
-
-          setValid(undefined)
-          setNewPassword('')
-          setConfirmPassword('')
-          if(confirmPasswordRef.current) confirmPasswordRef.current.value = ''
-          if(newPasswordRef.current) newPasswordRef.current.value = ''
-        }
-      }).catch(()=> console.error('Error in update password'))
-    }
-  }, [valid])
-
   const openEditColor = () => setShowColorEdit(true)
-
-  const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if(newPassword != confirmPassword) return setNewPasswordMessage('Las contraseñas no son iguales')
-    setShowValidator(true)
-  }
-
-  const changeConfirmPassword = (e: ChangeEvent<HTMLInputElement>) => {
-    setConfirmPassword(e.target.value)
-    if(newPasswordMessage) setNewPasswordMessage('')
-  }
 
   const closeSession = useCallback(() => {
     if(typeof localStorage != 'undefined'){
-      localStorage.removeItem('secret')
+      localStorage.removeItem(STORAGE_KEYS.token)
       setUser(undefined)
       navigate('/login')
+      createNotification({
+        type: 'success',
+        content: 'Sección cerrada'
+      })
     }
 
     setShowConfirmation(false)
@@ -232,9 +201,20 @@ export default function Me(){
                       
                       customFetch(`users/@me/status`, 'PATCH', {type: s.type}).then(res=> {
                         if(res.id){
+                          localStorage.setItem(STORAGE_KEYS.status, s.type.toString())
                           setUser(res)
+                          createNotification({
+                            type: 'success',
+                            content: 'Estado actualizado'
+                          })
                         }
-                      }).catch(()=> console.error('Error in update status'))
+                      }).catch(()=> {
+                        console.error('Error in update status')
+                        createNotification({
+                          type: 'error',
+                          content: 'Error al actualizar el estado'
+                        })
+                      })
                     }
 
                     return (
@@ -259,23 +239,7 @@ export default function Me(){
                   <p>Cambiar contraseña</p>
                 </>
               )} >
-                <form onSubmit={handlerSubmit} className={styles['me_profile_option-form']}>
-                  <div className={styles['me_profile_option-form-section']}>
-                    <label className={styles['me_profile_option-form-label']} htmlFor="newPassword">Nueva contraseña</label>
-                    <input ref={newPasswordRef} className={styles['me_profile_option-form-input']} onChange={(e)=> {
-                      setNewPassword(e.target.value)
-                      if(newPasswordMessage) setNewPasswordMessage('')
-                    }} type="password" id='newPassword' placeholder='&nbsp;' minLength={8} required />
-                  </div>
-
-                  {newPassword && <div className={styles['me_profile_option-form-section']}>
-                    <label className={styles['me_profile_option-form-label']} htmlFor="confirmPassword">Confirmar contraseña</label>
-                    <input ref={confirmPasswordRef} className={styles['me_profile_option-form-input']} onChange={changeConfirmPassword} type="password" id='confirmPassword' placeholder='&nbsp;' minLength={8} required />
-                  </div>}
-
-                  {newPasswordMessage && <p className={styles['me_profile_option-form-message']}>{newPasswordMessage}</p>}
-                  {((!newPasswordMessage) && newPassword && confirmPassword) && <button className={styles['me_profile_option-form-button']}>Cambiar contraseña</button>}
-                </form>
+                <ChangePassword />
               </Option>
             </div>
 

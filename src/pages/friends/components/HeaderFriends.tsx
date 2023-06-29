@@ -1,10 +1,10 @@
 import styles from '../friends.module.scss'
 
 import { MouseEvent, Dispatch, SetStateAction } from 'react'
-import { IoPersonAddOutline, IoPersonAdd } from 'react-icons/io5' 
-import { BsPeople, BsPeopleFill, BsMailbox, BsMailbox2 } from 'react-icons/bs' 
 import { useTooltip } from '@/hooks/useTooltip'
 import NotificationBadge from '@/components/notifications/NotificationBadge'
+import { IoPersonAddOutline, IoPersonAdd } from 'react-icons/io5' 
+import { BsPeople, BsPeopleFill, BsMailbox, BsMailbox2 } from 'react-icons/bs' 
 
 const elements = [
   {
