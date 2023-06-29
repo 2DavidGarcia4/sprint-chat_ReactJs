@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, Dispatch, SetStateAction, ReducerWithoutAction } from 'react'
+import { createContext, type Dispatch, type SetStateAction } from 'react'
 
 export interface TooltipOption {
   icon: string | JSX.Element,
@@ -19,24 +19,3 @@ export interface TooltipContextTs {
 }
 
 export const TooltipContext = createContext<TooltipContextTs | undefined>(undefined)
-
-enum ActionType {
-
-}
-
-function tooltipReducer(state: Tooltip | undefined, action: 'CREATE' | 'DELETE'){
-  switch (action) {
-    case 'CREATE': {
-      return state
-    } 
-  
-    default:
-      return state
-  }
-}
-
-export function useCtxTooltip() {
-  const [tooltip, dispatch] = useReducer(tooltipReducer, undefined)
-
-  return useContext(TooltipContext) as TooltipContextTs
-}

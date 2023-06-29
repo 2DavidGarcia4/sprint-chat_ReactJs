@@ -1,7 +1,27 @@
-import { createContext, useContext, Dispatch, SetStateAction, HTMLInputTypeAttribute } from 'react'
+import { createContext } from 'react'
 
-interface Notification {
+export interface Notification {
+  id: string
   type: 'success' | 'error' | 'info' | 'warning'
-  text: string
-  time?: number
+  time: number
+  content: string
 }
+
+interface NotificationContext {
+  notifications: Notification[]
+  deleteNotification: (id: string) => void
+  createNotification: (data: (Omit<Notification, 'id' | 'time'> & {
+    time?: number
+    mute?: boolean
+  })) => void
+}
+
+export const NotificationContext = createContext<NotificationContext>({
+  notifications: [],
+  deleteNotification(id) {
+    id
+  },
+  createNotification(data) {
+    data    
+  },
+}) 

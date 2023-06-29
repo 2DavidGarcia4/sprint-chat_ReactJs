@@ -1,4 +1,4 @@
-import { createContext, useContext, Dispatch, SetStateAction, HTMLInputTypeAttribute } from 'react'
+import { createContext, useContext, type Dispatch, type SetStateAction, type HTMLInputTypeAttribute } from 'react'
 
 export interface Searchable {
   list: any[]

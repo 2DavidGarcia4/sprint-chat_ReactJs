@@ -1,5 +1,5 @@
-import { createContext, useContext, Dispatch, SetStateAction } from 'react'
-import { FriendRequest } from '../utils/types'
+import { createContext, useContext, type Dispatch, type SetStateAction } from 'react'
+import type { FriendRequest } from '../utils/types'
 
 interface FriendsContext {
   requests: FriendRequest[]

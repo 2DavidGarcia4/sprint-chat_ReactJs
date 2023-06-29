@@ -1,4 +1,4 @@
-import { createContext, useContext, Dispatch, SetStateAction } from 'react'
+import { createContext, useContext, type Dispatch, type SetStateAction } from 'react'
 
 interface MeContext {
   userId?: string
