@@ -1,19 +1,21 @@
 import styles from './appNavigator.module.scss'
 
-import { Link } from '../router' 
-import { BsChatLeftText, BsChatLeftTextFill } from 'react-icons/bs'
-import { RiContactsLine, RiContactsFill } from 'react-icons/ri'
-import { HiOutlineUser, HiUser } from 'react-icons/hi'
-import { BsGear, BsGearFill } from 'react-icons/bs'
-import { useUser, useRoute } from '@/hooks'
-import { MouseEvent } from 'react'
-import CircleStatus from '../status/CircleStatus'
+import { type MouseEvent } from 'react'
+import { useStatus } from '@/hooks'
 import { useTooltip } from '@/hooks/useTooltip'
+import { useUser, useRoute } from '@/hooks'
+import { Link } from '../router' 
+import CircleStatus from '../shared/status/CircleStatus'
+import { BsGear, BsGearFill } from 'react-icons/bs'
+import { HiOutlineUser, HiUser } from 'react-icons/hi'
+import { RiContactsLine, RiContactsFill } from 'react-icons/ri'
+import { BsChatLeftText, BsChatLeftTextFill } from 'react-icons/bs'
 
 export default function AppNavigator(){
   const { user, protectedRoute } = useUser()
   const { pathName } = useRoute()
   const { events } = useTooltip()
+  useStatus()
 
   const isActiveRoute = (routName: string) => pathName.includes(routName)
 
