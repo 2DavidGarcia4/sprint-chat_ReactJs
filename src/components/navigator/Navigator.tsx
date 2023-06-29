@@ -1,12 +1,12 @@
 import styles from './navigator.module.scss'
 
-import { Link } from '../router'
 import { useRef } from 'react'
+import { Link } from '../router'
+import { useRoute } from '@/hooks/useRoute'
+import { APP_ROUTES, OTER_PATHS } from '@/utils/data'
+import AppNavigator from '../appNavigator/AppNavigator'
 import { BsX } from 'react-icons/bs'
 import { BiMenuAltRight } from 'react-icons/bi'
-import AppNavigator from '../appNavigator/AppNavigator'
-import { appRoutes, oterRoutes } from '@/utils/data'
-import { useRoute } from '@/hooks/useRoute'
 
 const routes = [
   {
@@ -42,8 +42,8 @@ export default function Navigator(){
 
   return (
     <>
-      {!oterRoutes.some(r=> pathName.includes(r)) &&
-      (!appRoutes.some(r=> pathName.includes(r)) ? <header ref={headerRef} className={styles.header}>
+      {!OTER_PATHS.some(r=> pathName.includes(r)) &&
+      (!APP_ROUTES.some(r=> pathName.includes(r)) ? <header ref={headerRef} className={styles.header}>
         <div className={styles['header-container']}>
           <Link className={styles['header_title']} href={'/'}>
             <img className={styles['header_title-image']} src={'/sprint-icon.png'} alt='Logo' width={40} height={40} />
