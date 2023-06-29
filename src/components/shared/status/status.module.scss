@@ -1,0 +1,29 @@
+.circle{
+  $first: 10.355339059327378px;
+  $percent: 10.355339059327378%;
+
+  // right: $first;
+  width: 16px;
+  // bottom: $first;
+  transform: translate(50%, 50%);
+  height: 16px;
+  border: 2px solid var(--Element-color);
+  position: absolute;
+  border-radius: 50%;
+
+  &.online{
+    background-color: #43B581;
+  }
+
+  &.offline{
+    background-color: #747F8D;
+  }
+
+  &.idle{
+    background-color: #FAA61A;
+  }
+
+  &.dnd{
+    background-color: #e93030;
+  }
+}
