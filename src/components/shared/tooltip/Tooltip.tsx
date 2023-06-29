@@ -1,14 +1,14 @@
 import styles from './tooltip.module.scss'
 
 import { useEffect, useState, useRef } from 'react'
-import { useCtxTooltip } from "@/contexts"
+import { useTooltip } from "@/hooks"
 import { setTooltipPosition } from '@/utils/services'
 
 export default function Tooltip(){
   const [thisRef, setThisRef] = useState<HTMLDivElement | null>(null)
-  const [ackground, setBackground] = useState(false)
+  const [background, setBackground] = useState(false)
   const backgroundRef = useRef<HTMLDivElement>(null)
-  const { tooltip, setTooltip } = useCtxTooltip()
+  const { tooltip, deleteTooltip } = useTooltip()
 
   const minWidth = () => {
     if(typeof window != 'undefined'){
@@ -34,11 +34,11 @@ export default function Tooltip(){
     if(minWidth()){
       backgroundRef.current?.classList.remove(styles.show)
       setTimeout(()=> {
-        setTooltip(undefined)
+        deleteTooltip()
         setBackground(false)
       }, 500)
 
-    }else setTooltip(undefined)
+    }else deleteTooltip()
   }
 
   const tooltipElement = tooltip && (
@@ -59,7 +59,7 @@ export default function Tooltip(){
 
   return (
     <>
-      {ackground ? 
+      {background ? 
         <div ref={backgroundRef} className={styles.background} onClick={closeTooltipOptions}>
           {tooltipElement}
         </div> :
