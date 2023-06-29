@@ -1,6 +1,4 @@
-'use client'
-
-import { useState, ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { TooltipContext, TooltipContextTs } from "../contexts"
 
 export default function TooltipProvider({ children }: { children: ReactNode }){

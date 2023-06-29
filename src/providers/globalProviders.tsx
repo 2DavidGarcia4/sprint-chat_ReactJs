@@ -1,16 +1,19 @@
-import { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 import UserProvider from './userProvider'
 import TooltipProvider from './tooltipProvider'
 import DynamicPanelProvider from './dynamicPanelProvider'
+import NotificationsProvider from './notificationsProvider'
 
 export default function GlobalProviders({children}: {children: ReactNode}){
   return (
     <>
       <TooltipProvider>
         <DynamicPanelProvider>
-          <UserProvider>
-            {children}
-          </UserProvider>
+          <NotificationsProvider>
+            <UserProvider>
+              {children}
+            </UserProvider>
+          </NotificationsProvider>
         </DynamicPanelProvider>
       </TooltipProvider>
     </>
