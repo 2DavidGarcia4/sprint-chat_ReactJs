@@ -1,7 +1,10 @@
 export function Route({path, title, component}: {
   path: string,
   title?: string
-  component: (prop: any) => JSX.Element
+  component: (prop: object) => JSX.Element
 }){
+  path 
+  title
+  component
   return null
 }

@@ -19,7 +19,7 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
     defaultValue?: string
   }[]
   type?: 'status'
-  onClose?: ()=> any
+  onClose?: ()=> void
 }){
   const [containerRef, setContainerRef] = useState<HTMLDivElement | null>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -58,13 +58,13 @@ export default function CustomEditForm({title, message, inputs, type, onClose}: 
   const handlerSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    let body: any = {}
+    let body: {[key: string]: string} = {}
 
     for(let i of inputs){
       const input = inputsRef.current.find(f=> f.key == i.key)
       if(i.regex && input?.value && (!i.regex.test(input.value))) return setErrorMessage('El texto proporcionado no es un emoji.')
       if(i.maxLength && input && i.maxLength < input.value.length) return setErrorMessage(`El mensaje no debe de contener más de ${i.maxLength} caracteres.`)
-      body[i.field] = input?.value
+      if(input?.value) body[i.field] = input.value
     }
 
     customFetch((type && type == 'status') ? `users/@me/status` : `users/${user?.id}`, 'PATCH', body).then(res=> {

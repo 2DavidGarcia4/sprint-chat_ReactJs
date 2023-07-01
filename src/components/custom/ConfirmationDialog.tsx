@@ -6,13 +6,13 @@ export default function ConfirmationDialog({title, description, type, onConfirm,
   title: string,
   description?: string, 
   type?: 'danger' | 'success',
-  onConfirm: ()=> any,
-  onCancel: ()=> any
+  onConfirm: ()=> never,
+  onCancel: ()=> never
 }){
   const thisRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
-  const closeDialog = (callback: () => any) => {
+  const closeDialog = (callback: () => void) => {
     if(thisRef.current){
       thisRef.current.classList.add('hidenDialog')
     }

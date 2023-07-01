@@ -1,11 +1,13 @@
 import styles from './dynamicPanel.module.scss'
 
 import { useEffect, useState, ChangeEvent } from 'react'
-import { Searchable } from '@/contexts'
+import { type Searchable } from '@/contexts'
 import { BsSearch } from 'react-icons/bs'
 
-export default function SearchableList({searchable}: {searchable: Searchable}){
-  const [elementsList, setElementsList] = useState<any[]>([])
+export default function SearchableList({searchable}: {
+  searchable: Searchable
+}) {
+  const [elementsList, setElementsList] = useState<void[]>([])
   const [input, setInput] = useState<HTMLInputElement | null>(null)
 
   const inputFocus = () => {

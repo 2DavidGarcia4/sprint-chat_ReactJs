@@ -1,7 +1,7 @@
-import { useRef, ReactNode, Children } from 'react'
+import React, { useRef, type ReactNode, Children, isValidElement } from 'react'
 import { match } from 'path-to-regexp'
-import { RouteParams } from '../../utils/types';
 import { useRoute } from '@/hooks';
+import type { RouteParams } from '@/utils/types';
 
 function defaultError() {
   return (
@@ -12,7 +12,7 @@ function defaultError() {
 interface Route {
   path: string
   title?: string
-  component: React.LazyExoticComponent<(props: any) => JSX.Element> | ((props: any) => JSX.Element)
+  component: React.LazyExoticComponent<(props: object) => JSX.Element> | ((props: object) => JSX.Element)
 }
 
 export function Router({children, routes, rootPath}: {
@@ -25,11 +25,19 @@ export function Router({children, routes, rootPath}: {
 
   let routeParams = {}
 
-  const routesFromChildren: Route[] = Children.map(children, ({type: {name}, props}: any)=> {
-    const isRoute = name == 'Route'
+  let routesFromChildren: Route[] = []
 
-    return isRoute ? props : null
-  }) || []
+  if(children != undefined){
+    routesFromChildren = Children.map(children, (child: ReactNode)=> {
+      if(isValidElement(child)){
+        const { name } = child.type as {name: string}
+        const isRoute = name == 'Route'
+    
+        return isRoute ? child.props : null
+      }else return null
+
+    }) || []
+  }
 
   const route = routesFromChildren.concat(routes || []).find(({path})=> {
     path = (rootPath || '')+path

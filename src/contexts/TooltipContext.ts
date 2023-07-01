@@ -3,7 +3,7 @@ import { createContext, type Dispatch, type SetStateAction } from 'react'
 export interface TooltipOption {
   icon: string | JSX.Element,
   name: string,
-  function: ()=> any
+  function: ()=> void
 }
 
 export interface Tooltip {
