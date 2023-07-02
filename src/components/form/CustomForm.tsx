@@ -26,7 +26,7 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
         if(res.status == 401) return setError('Campos inválidos\nEl coreo o la contraseña es invalida.')
 
         if(res.token){
-          localStorage.setItem(STORAGE_KEYS.token, res.token)
+          localStorage.setItem(STORAGE_KEYS.TOKEN, res.token)
           createNotification({
             type: 'success',
             content: 'Sesión iniciada'
@@ -55,7 +55,7 @@ export default function CustomForm({type}: {type: 'login' | 'register'}){
         }
 
         if(res.token){
-          localStorage.setItem(STORAGE_KEYS.token, res.token)
+          localStorage.setItem(STORAGE_KEYS.TOKEN, res.token)
           navigate('/')
         }
 

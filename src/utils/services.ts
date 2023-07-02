@@ -1,7 +1,5 @@
 import { Tooltip } from "../contexts"
 import { API_ENDPOINT, STORAGE_KEYS } from "./data"
-import { FriendRequest } from "./types"
-import { socket } from "./socket"
 
 
 export function navigate(href: string) {
@@ -43,7 +41,7 @@ export const transformText = (text: string) => {
 
 export async function customFetch(route: string, method='GET', body?: Object) {
   if(typeof localStorage != 'undefined'){
-    const token = localStorage.getItem(STORAGE_KEYS.token)
+    const token = localStorage.getItem(STORAGE_KEYS.TOKEN)
 
     return fetch(API_ENDPOINT+route, {
       method,
@@ -58,7 +56,7 @@ export async function customFetch(route: string, method='GET', body?: Object) {
 }
 
 export function setTooltipPosition(tooltip: Tooltip, element: HTMLDivElement) {
-  const { innerWidth, innerHeight } = window
+  const { innerWidth } = window
   const pdd = 10, ed = 20
 
   if(innerWidth <= 500) return
@@ -76,7 +74,7 @@ export function setTooltipPosition(tooltip: Tooltip, element: HTMLDivElement) {
   const firstChild = element.childNodes.item(0) as HTMLDivElement
   const arrowRect = firstChild.getBoundingClientRect()
   
-  let aY = 0
+  // let aY = 0
   let aX = 0
 
   if(tooltip.direction == 'top'){
@@ -121,10 +119,6 @@ export function setTooltipPosition(tooltip: Tooltip, element: HTMLDivElement) {
   element.style.left = x+'px'
   // firstChild.style.top = aY ? aY+'px' : ''
   firstChild.style.left = aX ? aX+'px' : ''
-}
-
-export function emitFriendRequestCreate(newRequest: FriendRequest) {
-  socket.emit('friendRequestCreate', newRequest)
 }
 
 export function handleHeight(firstElement: HTMLElement | null, lastElement: HTMLElement | null, paddding=0) {

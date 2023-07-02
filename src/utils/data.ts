@@ -12,7 +12,7 @@ export const STATUS_NAMES = {
 export const APP_ROUTES = ['/chats', '/me', '/friends', '/settings']
 export const OTER_PATHS = ['/login', '/register']
 
-export const STORAGE_KEYS = {
-  token: 'secret',
-  status: 'defaultStatus'
-} as const
+export const enum STORAGE_KEYS {
+  TOKEN = 'secret',
+  STATUS = 'defaultStatus'
+}

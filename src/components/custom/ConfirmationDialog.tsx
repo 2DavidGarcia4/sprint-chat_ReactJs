@@ -6,8 +6,8 @@ export default function ConfirmationDialog({title, description, type, onConfirm,
   title: string,
   description?: string, 
   type?: 'danger' | 'success',
-  onConfirm: ()=> never,
-  onCancel: ()=> never
+  onConfirm: ()=> void,
+  onCancel: ()=> void
 }){
   const thisRef = useRef<HTMLDivElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)

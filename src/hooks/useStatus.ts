@@ -7,7 +7,7 @@ export function useStatus() {
   const { user, setUser } = useUser()
   
   useEffect(()=> {
-    const defaultStatus = parseInt(localStorage.getItem(STORAGE_KEYS.status) || '1')
+    const defaultStatus = parseInt(localStorage.getItem(STORAGE_KEYS.STATUS) || '1')
 
     if(defaultStatus != 0 && user?.status?.type == 0){
       customFetch(`users/@me/status`, 'PATCH', {type: defaultStatus}).then(res=> {
