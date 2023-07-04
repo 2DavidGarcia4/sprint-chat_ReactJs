@@ -7,7 +7,7 @@ export type { UserContextTs } from './UserContext'
 export { TooltipContext } from './TooltipContext'
 export type { TooltipOption, Tooltip, TooltipContextTs } from './TooltipContext'
 
-export { DynamicPanelContext, useCtxDynamicPanel } from './DynamicPanelContext'
+export { DynamicPanelContext } from './DynamicPanelContext'
 export type { Searchable, PanelForm, DynamicPanelContextTs } from './DynamicPanelContext'
 
 export { NotificationContext } from './NotificationsContext'

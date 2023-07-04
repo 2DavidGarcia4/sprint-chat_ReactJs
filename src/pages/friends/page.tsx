@@ -35,28 +35,9 @@ export default function Friends(){
     }
     
     const handleFriendRequestDelete = (oldRequest: FriendRequest) => {
-      
       if(oldRequest.sender.id == user?.id || oldRequest.receiver.id == user?.id) {
         setRequests(r=> r.filter(f=> f.id != oldRequest.id))
         console.log(user.friends, user.friends.some(s=> s == oldRequest.sender.id))
-
-        if(oldRequest.sender.id != user?.id){
-          createNotification({
-            type: 'info',
-            mute: true,
-            time: 10,
-            content: `Solicitud de amistad de ${oldRequest.sender.userName} eliminada`
-          })
-        }
-
-        if(oldRequest.receiver.id != user?.id){
-          createNotification({
-            type: 'info',
-            mute: true,
-            time: 10,
-            content: `${oldRequest.receiver.userName} ha rechazado tu solicitud de amistad`
-          })
-        }
       }
     }
 

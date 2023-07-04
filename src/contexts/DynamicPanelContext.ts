@@ -1,4 +1,4 @@
-import { createContext, useContext, type Dispatch, type SetStateAction, type HTMLInputTypeAttribute } from 'react'
+import { createContext, type Dispatch, type SetStateAction, type HTMLInputTypeAttribute } from 'react'
 
 export interface Searchable {
   list: any[]
@@ -34,9 +34,9 @@ interface DynamicPanel {
 export interface DynamicPanelContextTs {
   panel: DynamicPanel | undefined
   setPanel: Dispatch<SetStateAction<DynamicPanel | undefined>>
+  close: boolean
+  setClose: Dispatch<SetStateAction<boolean>> 
+  closePanel: ()=> void
 }
 
 export const DynamicPanelContext = createContext<DynamicPanelContextTs | undefined>(undefined)
-export function useCtxDynamicPanel() {
-  return useContext(DynamicPanelContext) as DynamicPanelContextTs
-}
